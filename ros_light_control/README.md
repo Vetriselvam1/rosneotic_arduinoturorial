@@ -1,52 +1,97 @@
+Here’s a sample README.md file for your project that you can use to describe your code and how to run it:
 
-# ros_light_control Package
+# ROS Light Control
 
-This package demonstrates how to control an LED using ROS Noetic and Arduino through serial communication. The package includes a publisher node that sends commands via ROS messages, and an Arduino program to control the LED based on these messages.
+This repository contains a ROS-based light control system where you can control an LED using different methods such as ON, OFF, and BLINK. The project uses ROS Noetic and supports both visualization in RViz and control via command-line arguments.
 
-## Setup
+## Features
 
-### 1. Clone the Repository
-Clone the repository to your ROS workspace:
+- **ON**: Turns the LED ON.
+- **OFF**: Turns the LED OFF.
+- **BLINK**: Makes the LED blink continuously.
 
-```bash
-cd ~/catkin_ws/src
-git clone https://github.com/Vetriselvam1/rosneoticarduino_tutorials.git
+### Components
 
-### 2. Install Dependencies
+1. **ROS Noetic**: The main framework for controlling the system.
+2. **Arduino**: Controls the LED hardware.
+3. **RViz**: Used to visualize the LED status (ON, OFF, or BLINK).
 
-Make sure you have the necessary ROS packages installed:
+## Installation
 
-sudo apt-get install ros-noetic-rosserial-arduino ros-noetic-rosserial
+### Prerequisites
 
-### 3. Compile the Workspace
+1. **Install ROS Noetic** on your machine (if not already installed).
+   Follow the instructions at: [ROS Noetic Installation](http://wiki.ros.org/noetic/Installation)
 
-Navigate to your workspace and compile:
+2. **Install Arduino IDE** to upload the code to your Arduino board:  
+   [Download Arduino IDE](https://www.arduino.cc/en/software)
+
+
+Build the package
+
+    Navigate to your ROS workspace:
 
 cd ~/catkin_ws
-catkin_make
-source devel/setup.bash
 
- ### 4.Arduino Setup
+Build your workspace:
 
-Upload the Arduino code from the led.ino file to your Arduino. Make sure the correct port and board type are selected in the Arduino IDE.
-### 5. Running the Code
-On the Raspberry Pi or PC:
+    catkin_make
+    source devel/setup.bash
+    cd src 
+### Clone the repository
 
-    Start the ROS serial node to establish the connection:
+```bash
+git clone https://github.com/Vetriselvam1/rosneotic_arduinoturorial.git
+cd rosneotic_arduinoturorial
+
+Upload the Arduino code
+
+    Open the Arduino IDE, and select the correct board and port.
+    Upload the code from src/led_control.ino to your Arduino.
+
+Usage
+Run ROS Nodes
+
+    Start the ROS master:
+
+***roscore***
+
+Run the Arduino ROS Node:
+
+In a new terminal, run:
 
 rosrun rosserial_python serial_node.py /dev/ttyUSB0
 
-Run the character_publisher node to publish messages that control the LED:
+Replace /dev/ttyUSB0 with your Arduino port.
 
-    rosrun ros_light_control character_publisher_node
+Run the LED control node:
 
-On the Arduino:
+In another terminal, run:
 
-Make sure the Arduino is connected via USB, and it is running the led.ino code uploaded from the Arduino IDE.
-### 6. Testing
+    rosrun ros_light_control ros_ledcontrol_node <command>
 
-Once everything is set up, the LED connected to the Arduino will turn on or off based on the messages sent from the character_publisher node. You can change the character sent from the publisher to control the LED as per the defined logic.
-Troubleshooting
+    Replace <command> with:
+        ON to turn the LED on,
+        OFF to turn the LED off,
+        BLINK to make the LED blink.
 
-    Ensure the correct serial port (/dev/ttyUSB0) is used when running the serial node.
-    Check that the Arduino is connected properly and the code is uploaded without errors.
+***before Visualization start we need run***
+
+ rosrun ros_light_control rviz_ledcontrol_node
+
+ rosrun ros_light_control rviz_ledcontrol_node
+
+    Start RViz:
+
+    In a new terminal, run:
+
+    rosrun rviz rviz
+
+    In RViz, add a Marker display type and select the topic visualization_marker.
+
+    You should see the LED's status change according to the command sent (ON, OFF, or BLINK).
+
+Notes
+
+    The LED can be controlled in real-time by sending commands via the terminal.
+    RViz provides a visual representation of the LED's state.
